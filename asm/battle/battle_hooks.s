@@ -233,8 +233,8 @@ bx r2
 .global remap_move_effect_to_subscript_table
 remap_move_effect_to_subscript_table:
 ldr r0, =move_effect_to_subscripts
-lsl r1, r4, #2
-ldr r0, [r0, r1]
+lsl r1, r4, #1
+ldrh r0, [r0, r1]
 pop {r4, pc}
 
 .pool
@@ -472,5 +472,34 @@ bl GetAdjustedMoveType
 mov r4, r0
 ldr r0, =0x0224DD9C | 1
 bx r0
+
+.pool
+
+
+.global CantEscape_hook
+CantEscape_hook:
+ldr r5, =CantEscape_return_address
+mov r6, lr
+str r6, [r5]
+pop {r5-r6}
+bl CantEscape
+ldr r1, =CantEscape_return_address
+ldr r1, [r1]
+mov pc, r1
+
+.pool
+
+CantEscape_return_address:
+.word 0
+
+.global target_select_inject_illusion_icon
+target_select_inject_illusion_icon:
+// reset up original instructions, pass into C snippet
+ldrb r2, [r7, r2]
+ldr r0, [r5]
+mov r1, r6
+bl TargetSelectGrabIllusionPartyPokemon // (bw, client, pos)
+ldr r1, =0x02267CE6 | 1
+bx r1
 
 .pool

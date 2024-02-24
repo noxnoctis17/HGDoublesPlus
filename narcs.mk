@@ -82,7 +82,7 @@ MONDATA_TARGET := $(FILESYS)/a/0/0/2
 MONDATA_DEPENDENCIES := armips/data/mondata.s armips/data/tmlearnset.txt
 MONDATA_NAMES_DIR := $(BUILD)/rawtext/237 $(BUILD)/rawtext/238 $(BUILD)/rawtext/817
 MONDATA_DESCRIPTIONS_DIR := $(BUILD)/rawtext/803
-MONDATA_CLASSIFICATIONS_DIR := $(BUILD)/rawtext/816
+MONDATA_CLASSIFICATIONS_DIR := $(BUILD)/rawtext/816 $(BUILD)/rawtext/823
 MONDATA_HEIGHTS_DIR := $(BUILD)/rawtext/814 $(BUILD)/rawtext/815
 MONDATA_WEIGHTS_DIR := $(BUILD)/rawtext/812 $(BUILD)/rawtext/813
 
@@ -93,7 +93,7 @@ $(MONDATA_NARC): $(MONDATA_DEPENDENCIES)
 	$(NARCHIVE) create $@ $(MONDATA_DIR) -nf
 
 NARC_FILES += $(MONDATA_NARC)
-MSGDATA_COMPILETIME_DEPENDENCIES += $(BUILD)/rawtext/237.txt $(BUILD)/rawtext/238.txt $(BUILD)/rawtext/803.txt $(BUILD)/rawtext/812.txt $(BUILD)/rawtext/813.txt $(BUILD)/rawtext/814.txt $(BUILD)/rawtext/815.txt $(BUILD)/rawtext/817.txt
+MSGDATA_COMPILETIME_DEPENDENCIES += $(BUILD)/rawtext/237.txt $(BUILD)/rawtext/238.txt $(BUILD)/rawtext/803.txt $(BUILD)/rawtext/812.txt $(BUILD)/rawtext/813.txt $(BUILD)/rawtext/814.txt $(BUILD)/rawtext/815.txt $(BUILD)/rawtext/817.txt $(BUILD)/rawtext/823.txt
 
 
 SPRITEOFFSETS_DIR := $(BUILD)/a180
@@ -365,25 +365,6 @@ $(ITEMGFX_NARC): $(ITEMGFX_OBJS) $(ITEMGFX_PALS)
 NARC_FILES += $(ITEMGFX_NARC)
 
 
-ICONGFX_DIR := $(BUILD)/pokemonicon
-ICONGFX_NARC := $(BUILD_NARC)/pokemonicon.narc
-ICONGFX_TARGET := $(FILESYS)/a/0/2/0
-ICONGFX_DEPENDENCIES_DIR := data/graphics/icongfx
-ICONGFX_RAWDATA_DIR := rawdata/files_from_a020
-
-ICONGFX_SRCS := $(wildcard $(ICONGFX_DEPENDENCIES_DIR)/*.png)
-ICONGFX_OBJS := $(patsubst $(ICONGFX_DEPENDENCIES_DIR)/%.png,$(ICONGFX_DIR)/1_%.NCGR,$(ICONGFX_SRCS))
-
-$(ICONGFX_DIR)/1_%.NCGR:$(ICONGFX_DEPENDENCIES_DIR)/%.png
-	$(GFX) $< $@ -clobbersize -version101
-
-$(ICONGFX_NARC): $(ICONGFX_OBJS)
-	cp -r $(ICONGFX_RAWDATA_DIR)/. $(ICONGFX_DIR)
-	$(NARCHIVE) create $@ $(ICONGFX_DIR) -nf
-
-NARC_FILES += $(ICONGFX_NARC)
-
-
 OVERWORLDS_DIR := $(BUILD)/pokemonow
 OVERWORLDS_NARC := $(BUILD_NARC)/pokemonow.narc
 OVERWORLDS_TARGET := $(FILESYS)/a/0/8/1
@@ -616,3 +597,15 @@ $(SCR_SEQ_NARC): $(SCR_SEQ_DEPENDENCIES)
 .PHONY: $(SCR_SEQ_NARC)
 
 NARC_FILES += $(SCR_SEQ_NARC)
+
+HEADBUTT_DIR := $(BUILD)/headbutttrees
+HEADBUTT_NARC := $(BUILD_NARC)/headbutt.narc
+HEADBUTT_TARGET := $(FILESYS)/a/2/5/2
+HEADBUTT_DEPENDENCIES := armips/data/headbutt.s
+
+$(HEADBUTT_NARC): $(HEADBUTT_DEPENDENCIES)
+	mkdir -p $(HEADBUTT_DIR)
+	$(ARMIPS) $^
+	$(NARCHIVE) create $@ $(HEADBUTT_DIR) -nf
+
+NARC_FILES += $(HEADBUTT_NARC)
